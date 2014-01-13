@@ -28,6 +28,7 @@
 {
     [super viewDidLoad];
     items = [NSMutableArray arrayWithObjects:@"One", @"Two", @"Three", nil];
+    itemColor = [NSMutableArray arrayWithObjects:[UIColor blackColor],[UIColor blackColor],[UIColor blackColor], nil];
     editButtonStatus = NO;
 	// Do any additional setup after loading the view, typically from a nib.
 }
@@ -41,6 +42,7 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"myReuseIdentifier"];
     cell.textLabel.text = [items objectAtIndex:indexPath.row];
+    cell.textLabel.textColor = [itemColor objectAtIndex:indexPath.row];
      //UISwipeGestureRecognizer *swipedCell = [[UIGestureRecognizer alloc] initWithTarget:self action:@selector(cellSwipe:)];
     return cell;
 }
@@ -50,15 +52,15 @@
     UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
     if (editButtonStatus == NO)
         {
-            //NSMutableAttributedString *completedItem = [items objectAtIndex:indexPath.row];
-            //[completedItem addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(0,4) ];
-            selectedCell.textLabel.textColor = [UIColor greenColor];
+            //selectedCell.textLabel.textColor = [UIColor greenColor];
+            [itemColor replaceObjectAtIndex:indexPath.row withObject:[UIColor greenColor]];
+            [myTableView reloadData];
         }
     else
     {
-        //[tableView deleteRowsAtIndexPaths:items withRowAnimation:UITableViewRowAnimationTop]; Try to remove cells/rows instead of objects in array.
         
         [items removeObjectAtIndex:indexPath.row];
+        [itemColor removeObjectAtIndex:indexPath.row];
         [myTableView reloadData];
     }
     
@@ -67,6 +69,7 @@
 
 - (IBAction)onAddButtonPressed:(id)sender {
     [items addObject:myTextField.text];
+    [itemColor addObject:[UIColor blackColor]];
     [myTableView reloadData];
     myTextField.text = nil;
 }
@@ -88,6 +91,7 @@
 {
     [myTextField resignFirstResponder];
     [items addObject:myTextField.text];
+    [itemColor addObject:[UIColor blackColor]];
     [myTableView reloadData];
     myTextField.text = nil;
     return YES;
